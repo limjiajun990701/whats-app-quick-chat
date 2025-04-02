@@ -69,21 +69,21 @@ const TelegramLinkGenerator: React.FC = () => {
   const isLinkValid = telegramLink && phoneOrUsername.trim().length > 0;
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto bg-white/10 backdrop-blur-md border-white/20">
       <CardContent className="pt-6">
         <div className="space-y-4">
           <div className="flex items-center justify-between mb-4">
             <Button 
               variant={isUsername ? "outline" : "default"} 
               onClick={isUsername ? handleInputTypeToggle : undefined}
-              className="flex-1 mr-2"
+              className={`flex-1 mr-2 ${isUsername ? 'border-[#0088cc] text-[#0088cc]' : 'bg-[#0088cc] hover:bg-[#0099dd]'}`}
             >
               Phone Number
             </Button>
             <Button 
               variant={isUsername ? "default" : "outline"} 
               onClick={!isUsername ? handleInputTypeToggle : undefined}
-              className="flex-1"
+              className={`flex-1 ${!isUsername ? 'border-[#0088cc] text-[#0088cc]' : 'bg-[#0088cc] hover:bg-[#0099dd]'}`}
             >
               Username
             </Button>
@@ -91,7 +91,7 @@ const TelegramLinkGenerator: React.FC = () => {
 
           {isUsername ? (
             <div className="space-y-2">
-              <label htmlFor="username" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <label htmlFor="username" className="text-sm font-medium leading-none text-white/90 peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Telegram Username
               </label>
               <Input
@@ -99,21 +99,30 @@ const TelegramLinkGenerator: React.FC = () => {
                 placeholder="@username"
                 value={phoneOrUsername}
                 onChange={(e) => handleInputChange(e.target.value)}
+                className="bg-white/20 border-white/30 text-white placeholder:text-white/50"
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-white/70">
                 Enter the Telegram username (e.g., @telegramuser)
               </p>
             </div>
           ) : (
-            <PhoneInput value={phoneOrUsername} onChange={handleInputChange} />
+            <PhoneInput 
+              value={phoneOrUsername} 
+              onChange={handleInputChange}
+              className="bg-white/20 border-white/30 text-white" 
+            />
           )}
           
-          <MessageInput value={message} onChange={handleMessageChange} />
+          <MessageInput 
+            value={message} 
+            onChange={handleMessageChange}
+            className="bg-white/20 border-white/30 text-white placeholder:text-white/50" 
+          />
         
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-6">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="link">Link</TabsTrigger>
-              <TabsTrigger value="qr">QR Code</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-white/10">
+              <TabsTrigger value="link" className="data-[state=active]:bg-[#0088cc] text-white">Link</TabsTrigger>
+              <TabsTrigger value="qr" className="data-[state=active]:bg-[#0088cc] text-white">QR Code</TabsTrigger>
             </TabsList>
             <TabsContent value="link" className="space-y-4">
               <div className="flex mt-4">
@@ -121,18 +130,19 @@ const TelegramLinkGenerator: React.FC = () => {
                   readOnly
                   value={telegramLink}
                   placeholder="Generated Telegram link will appear here"
-                  className="flex-grow mr-2"
+                  className="flex-grow mr-2 bg-white/20 border-white/30 text-white placeholder:text-white/50"
                 />
                 <Button 
                   variant="outline" 
                   onClick={handleCopy}
                   disabled={!isLinkValid}
+                  className="border-white/30 text-white hover:bg-white/10"
                 >
                   Copy
                 </Button>
               </div>
               <Button 
-                className="w-full" 
+                className="w-full bg-[#0088cc] hover:bg-[#0099dd]" 
                 onClick={handleOpenChat}
                 disabled={!isLinkValid}
               >
