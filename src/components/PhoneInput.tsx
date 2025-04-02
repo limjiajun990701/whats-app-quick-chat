@@ -1,7 +1,7 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import CountrySelect, { countries } from './CountrySelect';
 
 interface PhoneInputProps {
   value: string;
@@ -9,30 +9,68 @@ interface PhoneInputProps {
 }
 
 const PhoneInput: React.FC<PhoneInputProps> = ({ value, onChange }) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
+  // Extract dial code and number from the current value
+  const extractDialCodeAndNumber = (phoneValue: string) => {
+    // If value starts with +, try to extract dial code
+    if (phoneValue.startsWith('+')) {
+      // Find a matching country
+      for (const country of countries) {
+        if (phoneValue.startsWith(`+${country.dialCode}`)) {
+          return {
+            dialCode: country.dialCode,
+            number: phoneValue.substring(country.dialCode.length + 1) // +1 for the '+'
+          };
+        }
+      }
+    }
+    
+    // Default to Malaysia if no match found
+    return {
+      dialCode: '60',
+      number: phoneValue.startsWith('+') ? phoneValue.substring(1) : phoneValue
+    };
+  };
+
+  const { dialCode, number } = extractDialCodeAndNumber(value);
+  const [selectedDialCode, setSelectedDialCode] = useState(dialCode);
+  
+  const handleCountrySelect = (newDialCode: string) => {
+    setSelectedDialCode(newDialCode);
+    // Update the full phone number with the new dial code
+    onChange(`+${newDialCode}${number}`);
+  };
+
+  const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newNumber = e.target.value;
+    // Only keep digits, spaces, and dashes
+    const cleanedNumber = newNumber.replace(/[^\d\s-]/g, '');
+    // Update the full phone number
+    onChange(`+${selectedDialCode}${cleanedNumber}`);
   };
 
   return (
     <div className="space-y-2">
       <Label htmlFor="phone">Phone Number (with country code)</Label>
-      <div className="relative">
-        <Input
-          id="phone"
-          type="tel"
-          placeholder="+60123456789"
-          value={value}
-          onChange={handleChange}
-          className="pl-10"
-        />
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-          </svg>
+      <div className="flex">
+        <div className="mr-2">
+          <CountrySelect 
+            selectedDialCode={selectedDialCode}
+            onSelect={handleCountrySelect}
+          />
+        </div>
+        <div className="relative flex-1">
+          <Input
+            id="phone"
+            type="tel"
+            placeholder="123456789"
+            value={number}
+            onChange={handleNumberChange}
+            className="pl-3"
+          />
         </div>
       </div>
       <p className="text-xs text-muted-foreground">
-        Enter phone number with country code (e.g., +60123456789)
+        Enter phone number without leading zeros (e.g., for Malaysia +60, enter 123456789)
       </p>
     </div>
   );
