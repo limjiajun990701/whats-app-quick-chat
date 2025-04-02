@@ -18,15 +18,21 @@ const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = ({ url, isActive }) => {
         .then((QRCode) => {
           if (qrRef.current) {
             qrRef.current.innerHTML = '';
+            // Create canvas element
+            const canvas = document.createElement('canvas');
+            
+            // Use toCanvas method with the correct callback signature
             QRCode.toCanvas(
-              document.createElement('canvas'),
+              canvas,
               url,
               { width: 200, margin: 1 },
-              (error, canvas) => {
+              (error) => {
                 if (error) {
                   console.error('Error generating QR code:', error);
                   return;
                 }
+                
+                // Append the canvas to the ref element
                 if (qrRef.current) {
                   qrRef.current.appendChild(canvas);
                 }
