@@ -1,34 +1,34 @@
 
 import React from 'react';
-import WhatsAppLinkGenerator from '@/components/WhatsAppLinkGenerator';
+import TelegramLinkGenerator from '@/components/TelegramLinkGenerator';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
-const Index = () => {
+const Telegram = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-green-50 to-white">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
       <header className="text-center py-8 px-4">
-        <h1 className="text-3xl font-bold text-whatsapp-dark mb-1">WhatsApp Direct Chat</h1>
+        <h1 className="text-3xl font-bold text-blue-600 mb-1">Telegram Direct Chat</h1>
         <p className="text-muted-foreground">
           Chat without saving the contact first
         </p>
         <div className="flex justify-center mt-4 space-x-4">
-          <Button variant="default" asChild>
+          <Button variant="outline" asChild>
             <Link to="/">WhatsApp</Link>
           </Button>
-          <Button variant="outline" asChild>
+          <Button variant="default" asChild>
             <Link to="/telegram">Telegram</Link>
           </Button>
         </div>
       </header>
 
       <main className="flex-grow container max-w-lg px-4 py-6">
-        <WhatsAppLinkGenerator />
+        <TelegramLinkGenerator />
 
         <div className="mt-12 text-center text-sm text-muted-foreground">
           <h2 className="text-lg font-medium text-foreground mb-2">How it works</h2>
           <ol className="list-decimal text-left max-w-md mx-auto space-y-2">
-            <li>Enter a phone number with country code (e.g., +60123456789)</li>
+            <li>Enter a Telegram username (e.g., @username) or phone number with country code</li>
             <li>Add an optional message</li>
             <li>Click "Open Chat" to start talking, or copy the link to share</li>
             <li>You can also generate a QR code to scan with your phone</li>
@@ -38,13 +38,13 @@ const Index = () => {
 
       <footer className="text-center p-4 text-sm text-muted-foreground">
         <p>
-          This tool helps you start WhatsApp conversations without saving contacts.
+          This tool helps you start Telegram conversations without saving contacts.
           <br />
-          Not affiliated with WhatsApp or Meta.
+          Not affiliated with Telegram.
         </p>
       </footer>
     </div>
   );
 };
 
-export default Index;
+export default Telegram;
