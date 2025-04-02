@@ -1,14 +1,17 @@
+
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import CountrySelect, { countries } from './CountrySelect';
+import { cn } from '@/lib/utils';
 
 interface PhoneInputProps {
   value: string;
   onChange: (value: string) => void;
+  className?: string;
 }
 
-const PhoneInput: React.FC<PhoneInputProps> = ({ value, onChange }) => {
+const PhoneInput: React.FC<PhoneInputProps> = ({ value, onChange, className }) => {
   // Extract dial code and number from the current value
   const extractDialCodeAndNumber = (phoneValue: string) => {
     // If value starts with +, try to extract dial code
@@ -49,7 +52,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({ value, onChange }) => {
   };
 
   return (
-    <div className="space-y-2">
+    <div className={cn("space-y-2", className)}>
       <Label htmlFor="phone">Phone Number (with country code)</Label>
       <div className="flex">
         <div className="mr-2">
