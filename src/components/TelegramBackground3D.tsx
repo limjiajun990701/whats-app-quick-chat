@@ -1,5 +1,5 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -49,9 +49,27 @@ const FloatingSpheres = () => {
 
 // Main background component
 const TelegramBackground3D: React.FC = () => {
+  // Ref to track if component is mounted
+  const isMounted = useRef(true);
+
+  // Effect to handle cleanup properly
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
   return (
     <div className="fixed inset-0 -z-10">
-      <Canvas camera={{ position: [0, 0, 8], fov: 60 }}>
+      <Canvas 
+        camera={{ position: [0, 0, 8], fov: 60 }}
+        gl={{ 
+          powerPreference: "high-performance",
+          antialias: true,
+          preserveDrawingBuffer: true
+        }}
+        frameloop="demand"
+      >
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1} />
         <pointLight position={[-10, -10, -5]} intensity={0.5} color="#0088cc" />
