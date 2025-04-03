@@ -1,14 +1,13 @@
 
 import React from 'react';
 import TelegramLinkGenerator from '@/components/TelegramLinkGenerator';
-import TelegramBackground3D from '@/components/TelegramBackground3D';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 const Telegram = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <TelegramBackground3D />
+      {/* TelegramBackground3D is now managed by App.tsx */}
       
       <header className="text-center py-8 px-4 relative z-10">
         <h1 className="text-3xl font-bold text-white mb-1">Telegram Direct Chat</h1>
