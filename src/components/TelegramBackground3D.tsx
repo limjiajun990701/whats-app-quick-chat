@@ -49,16 +49,38 @@ const FloatingSpheres = () => {
 
 // Add simple gradient backdrop for additional visual effect
 const GradientBackdrop = () => {
+  // Create a shader material with gradient colors
+  const uniforms = {
+    colorA: { value: new THREE.Color("#051c34") },
+    colorB: { value: new THREE.Color("#0a3464") }
+  };
+  
+  const vertexShader = `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `;
+  
+  const fragmentShader = `
+    uniform vec3 colorA;
+    uniform vec3 colorB;
+    varying vec2 vUv;
+    
+    void main() {
+      gl_FragColor = vec4(mix(colorA, colorB, vUv.y), 1.0);
+    }
+  `;
+
   return (
     <mesh position={[0, 0, -10]}>
       <planeGeometry args={[50, 50]} />
-      <meshBasicMaterial>
-        <gradientTexture
-          stops={[0, 1]}
-          colors={['#051c34', '#0a3464']}
-          attach="map"
-        />
-      </meshBasicMaterial>
+      <shaderMaterial 
+        uniforms={uniforms}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+      />
     </mesh>
   );
 };
