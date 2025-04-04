@@ -11,39 +11,55 @@ const FloatingSpheres = () => {
   // Use frame to animate the spheres
   useFrame(({ clock }) => {
     if (group.current) {
-      group.current.rotation.y = Math.sin(clock.getElapsedTime() * 0.2) * 0.3;
-      group.current.rotation.x = Math.cos(clock.getElapsedTime() * 0.2) * 0.2;
+      group.current.rotation.y = Math.sin(clock.getElapsedTime() * 0.15) * 0.2;
+      group.current.rotation.x = Math.cos(clock.getElapsedTime() * 0.15) * 0.1;
     }
   });
 
-  // Create multiple spheres with Telegram brand colors
+  // Create fewer, more optimized spheres with Telegram brand colors
   return (
     <group ref={group}>
-      {Array.from({ length: 8 }).map((_, i) => {
-        const radius = Math.random() * 0.5 + 0.2;
+      {Array.from({ length: 5 }).map((_, i) => {
+        const radius = Math.random() * 0.4 + 0.2;
         const position = [
-          (Math.random() - 0.5) * 8,
-          (Math.random() - 0.5) * 8,
-          (Math.random() - 0.5) * 8
+          (Math.random() - 0.5) * 7,
+          (Math.random() - 0.5) * 7,
+          (Math.random() - 0.5) * 7
         ];
         
-        // Use Telegram blue colors
-        const color = new THREE.Color().setHSL(0.58, 0.8, 0.4 + Math.random() * 0.3);
+        // Use Telegram blue colors with variation
+        const color = new THREE.Color(0x0088cc).offsetHSL(0, 0, (Math.random() - 0.5) * 0.2);
         
         return (
           <mesh key={i} position={position as [number, number, number]}>
-            <sphereGeometry args={[radius, 16, 16]} />
+            <sphereGeometry args={[radius, 12, 12]} />
             <meshStandardMaterial 
               color={color} 
-              roughness={0.5} 
-              metalness={0.8}
+              roughness={0.4} 
+              metalness={0.6}
               transparent
-              opacity={0.7}
+              opacity={0.8}
             />
           </mesh>
         );
       })}
     </group>
+  );
+};
+
+// Add simple gradient backdrop for additional visual effect
+const GradientBackdrop = () => {
+  return (
+    <mesh position={[0, 0, -10]}>
+      <planeGeometry args={[50, 50]} />
+      <meshBasicMaterial>
+        <gradientTexture
+          stops={[0, 1]}
+          colors={['#051c34', '#0a3464']}
+          attach="map"
+        />
+      </meshBasicMaterial>
+    </mesh>
   );
 };
 
@@ -91,43 +107,47 @@ const TelegramBackground3D: React.FC = () => {
   }, []);
 
   if (!isReady || !hasWebGLSupport) {
-    return <div className="fixed inset-0 -z-10 bg-[#141e30]"></div>;
+    // Improved static fallback with gradient
+    return (
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#051c34] to-[#0a3464] animate-gradient-y"></div>
+    );
   }
 
   return (
     <div className="fixed inset-0 -z-10">
       <Canvas 
-        camera={{ position: [0, 0, 8], fov: 60 }}
+        camera={{ position: [0, 0, 7], fov: 55 }}
         gl={{ 
-          powerPreference: "default", // Changed from high-performance to default
-          antialias: false, // Reduced quality for better performance
+          powerPreference: "low-power",
+          antialias: false,
           alpha: true,
           stencil: false,
           depth: true,
-          precision: "lowp", // Lower precision for better performance
-          failIfMajorPerformanceCaveat: true // Will use fallback if performance is poor
+          precision: "lowp",
+          failIfMajorPerformanceCaveat: true
         }}
-        frameloop="always" // Changed from demand to always
+        frameloop="demand"
         style={{ opacity: isReady ? 1 : 0 }}
-        dpr={[0.5, 1]} // Reduced pixel ratio for performance
+        dpr={[0.5, 1]}
       >
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
-        <pointLight position={[-10, -10, -5]} intensity={0.5} color="#0088cc" />
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[10, 10, 5]} intensity={0.8} />
+        <pointLight position={[-10, -10, -5]} intensity={0.4} color="#0088cc" />
         
         <FloatingSpheres />
+        <GradientBackdrop />
         
         <OrbitControls 
           enableZoom={false}
           enablePan={false}
-          rotateSpeed={0.3}
+          rotateSpeed={0.2}
           autoRotate
-          autoRotateSpeed={0.3}
+          autoRotateSpeed={0.2}
         />
         
         {/* Background gradient */}
-        <color attach="background" args={['#141e30']} />
-        <fog attach="fog" args={['#141e30', 8, 25]} />
+        <color attach="background" args={['#051c34']} />
+        <fog attach="fog" args={['#051c34', 7, 20]} />
       </Canvas>
     </div>
   );
