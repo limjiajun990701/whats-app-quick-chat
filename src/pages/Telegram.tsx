@@ -49,7 +49,7 @@ const Telegram = () => {
             {[
               "Enter a Telegram username (e.g., @username) or phone number with country code",
               "Add an optional message to start the conversation with",
-              "Click "Open Chat" to start talking, or copy the link to share",
+              "Click \"Open Chat\" to start talking, or copy the link to share",
               "You can also generate a QR code for easy mobile device scanning"
             ].map((step, index) => (
               <li key={index} className="flex gap-3 items-start">
