@@ -3,6 +3,7 @@ import React from 'react';
 import TelegramLinkGenerator from '@/components/TelegramLinkGenerator';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { ExternalLink, MessageCircle, Info, CheckCircle } from 'lucide-react';
 
 const Telegram = () => {
   return (
@@ -39,14 +40,31 @@ const Telegram = () => {
       <main className="flex-grow container max-w-xl px-4 py-8 relative z-10">
         <TelegramLinkGenerator />
 
-        <div className="mt-12 bg-white/5 backdrop-blur-md p-6 rounded-xl border border-white/10 shadow-lg">
-          <h2 className="text-xl font-semibold text-white mb-4 text-center">How it works</h2>
-          <ol className="list-decimal text-left pl-6 space-y-3 text-white/90">
-            <li>Enter a Telegram username (e.g., @username) or phone number with country code</li>
-            <li>Add an optional message to start the conversation with</li>
-            <li>Click "Open Chat" to start talking, or copy the link to share</li>
-            <li>You can also generate a QR code for easy mobile device scanning</li>
+        <div className="mt-12 bg-gradient-to-br from-[#051c34]/80 to-[#0a3464]/80 backdrop-blur-md p-6 rounded-xl border border-white/10 shadow-lg">
+          <h2 className="text-xl font-semibold text-white mb-4 flex items-center justify-center gap-2">
+            <Info className="w-5 h-5 text-[#0088cc]" />
+            How it works
+          </h2>
+          <ol className="list-none text-left space-y-4 text-white/90">
+            {[
+              "Enter a Telegram username (e.g., @username) or phone number with country code",
+              "Add an optional message to start the conversation with",
+              "Click "Open Chat" to start talking, or copy the link to share",
+              "You can also generate a QR code for easy mobile device scanning"
+            ].map((step, index) => (
+              <li key={index} className="flex gap-3 items-start">
+                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#0088cc] flex items-center justify-center text-white font-bold">
+                  {index + 1}
+                </div>
+                <span>{step}</span>
+              </li>
+            ))}
           </ol>
+          
+          <div className="mt-6 pt-6 border-t border-white/10 flex items-center justify-center gap-3 text-white/80 text-sm">
+            <CheckCircle className="w-4 h-4 text-[#0088cc]" />
+            <span>No need to save contacts before chatting</span>
+          </div>
         </div>
       </main>
 

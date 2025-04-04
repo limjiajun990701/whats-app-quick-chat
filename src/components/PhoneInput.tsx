@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import CountrySelect, { countries } from './CountrySelect';
 import { cn } from '@/lib/utils';
+import { Phone } from 'lucide-react';
 
 interface PhoneInputProps {
   value: string;
@@ -53,26 +54,34 @@ const PhoneInput: React.FC<PhoneInputProps> = ({ value, onChange, className }) =
 
   return (
     <div className={cn("space-y-2", className)}>
-      <Label htmlFor="phone">Phone Number (with country code)</Label>
-      <div className="flex">
-        <div className="mr-2">
+      <Label htmlFor="phone" className="text-white/90 text-sm font-medium">
+        Phone Number (with country code)
+      </Label>
+      <div className="flex items-center">
+        <div className="mr-2 z-10">
           <CountrySelect 
             selectedDialCode={selectedDialCode}
             onSelect={handleCountrySelect}
           />
         </div>
         <div className="relative flex-1">
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+            <span className="text-white/70">+{selectedDialCode}</span>
+          </div>
           <Input
             id="phone"
             type="tel"
             placeholder="123456789"
             value={number}
             onChange={handleNumberChange}
-            className="pl-3"
+            className="pl-[calc(8px+0.5rem+var(--dial-code-width))]"
+            style={{
+              "--dial-code-width": `${selectedDialCode.length * 0.6}rem`
+            } as React.CSSProperties}
           />
         </div>
       </div>
-      <p className="text-xs text-muted-foreground">
+      <p className="text-xs text-white/70">
         Enter phone number without leading zeros (e.g., for Malaysia +60, enter 123456789)
       </p>
     </div>

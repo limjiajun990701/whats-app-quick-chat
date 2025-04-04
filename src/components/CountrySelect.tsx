@@ -46,17 +46,25 @@ const CountrySelect: React.FC<CountrySelectProps> = ({ selectedDialCode, onSelec
       value={selectedDialCode} 
       onValueChange={(value) => onSelect(value)}
     >
-      <SelectTrigger className="w-[80px] h-10">
-        <SelectValue placeholder={`${selectedCountry.flag} +${selectedDialCode}`}>
-          {selectedCountry.flag} +{selectedDialCode}
+      <SelectTrigger className="w-[90px] h-10 bg-[#0088cc]/30 border-[#0088cc]/50 text-white focus:ring-[#0088cc]/60 focus:ring-offset-0">
+        <SelectValue>
+          <span className="flex items-center">
+            <span className="mr-1">{selectedCountry.flag}</span>
+            <span>+{selectedDialCode}</span>
+          </span>
         </SelectValue>
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="bg-[#051c34] border-[#0088cc]/50 text-white">
         {countries.map((country) => (
-          <SelectItem key={country.code} value={country.dialCode}>
+          <SelectItem 
+            key={country.code} 
+            value={country.dialCode} 
+            className="focus:bg-[#0088cc]/20 focus:text-white hover:bg-[#0088cc]/20 cursor-pointer"
+          >
             <span className="flex items-center gap-2">
               <span>{country.flag}</span>
               <span>+{country.dialCode}</span>
+              <span className="text-xs text-white/60 ml-1">({country.name})</span>
             </span>
           </SelectItem>
         ))}
