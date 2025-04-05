@@ -3,7 +3,6 @@
 
 A modern web application for generating direct chat links for WhatsApp and Telegram without saving contacts first. This tool lets users create shareable links or QR codes to start conversations instantly.
 
-![Chat Link Generator](https://i.imgur.com/YOUR_SCREENSHOT_LINK.jpg)
 
 ## Features
 
